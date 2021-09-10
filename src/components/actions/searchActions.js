@@ -71,7 +71,7 @@ export const firstScreenToggle = () => {
 export const fetchSearchResults = (searchValue) => {
   return (dispatch) => {
     axios
-      .get(`http://openlibrary.org/search.json?q=${searchValue}`)
+      .get(`https://openlibrary.org/search.json?q=${searchValue}`)
       .then((response) => {
         const searchData = response.data.docs;
         console.log("check", searchData);

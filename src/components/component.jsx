@@ -78,6 +78,11 @@ sortedDateData(sortedData);
             aria-label="Enter Bok Title"
             aria-required="true"
             name="searchBox"
+            onKeyDown={(e) => {
+              if(e.keyCode === 13) {
+                handleSearch()
+              }
+            }}
           />
           <button className="input-button" aria-label="Search Button" onClick={handleSearch}>
             Search
