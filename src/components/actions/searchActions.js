@@ -74,7 +74,6 @@ export const fetchSearchResults = (searchValue) => {
       .get(`https://openlibrary.org/search.json?q=${searchValue}`)
       .then((response) => {
         const searchData = response.data.docs;
-        console.log("check", searchData);
         let authorsArray = searchData.map((data) => {
           if (data.author_key !== undefined) {
             return data.author_key[0];

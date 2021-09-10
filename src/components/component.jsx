@@ -71,6 +71,7 @@ sortedDateData(sortedData);
         <div className="search-form">
   <p className="error-p">{errorMsg}</p>
           <input
+          data-testid="search-input"
             type="text"
             className="input-text"
             placeholder="Enter book title"
@@ -84,7 +85,7 @@ sortedDateData(sortedData);
               }
             }}
           />
-          <button className="input-button" aria-label="Search Button" onClick={handleSearch}>
+          <button data-testid="search-button" className="input-button" aria-label="Search Button" onClick={handleSearch}>
             Search
           </button>
         </div>

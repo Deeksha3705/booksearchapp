@@ -1,8 +1,22 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders input text', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  const searchInput = screen.getByTestId('search-input')
+  expect(searchInput).toBeInTheDocument();
+});
+
+test('renders button', () => {
+  render(<App />);
+  const searchButton = screen.getByTestId('search-button')
+  expect(searchButton).toBeInTheDocument();
+});
+
+test('checking validation', async () => {
+  render(<App />);
+  const searchButton = screen.getByTestId('search-button')
+  fireEvent.click(searchButton)
+  const errorText = screen.getByText(/Please enter more than 2 characters/i);
+  await expect(errorText).toBeInTheDocument();
 });
