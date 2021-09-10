@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -20,13 +20,18 @@ const BookApp = (props) => {
     fetchSearchRequest,
     firstScreenToggle,
     sortData,
-    sortedDateData
+    sortedDateData,
   } = props;
+
+  const inputRef = useRef();
 
   const [searchValue, setSearchValue] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [sortValue, setSortValue] = useState(SELECT_OPTION);
 
+  useEffect(() => {
+inputRef.current.focus();
+  }, [])
   const handleChange = (e) => {
     setSearchValue(e.target.value);
   };
@@ -37,42 +42,41 @@ const BookApp = (props) => {
     if (sortVal === SORT_BY_TITLE_A_Z || SORT_BY_TITLE_Z_A) {
       sortData(sortVal);
     }
-    if(sortVal === SORT_BY_DATE_ASC)
-    {
-        const sortedData = data.data.sort(compareDateAsc);
-        sortedDateData(sortedData);
+    if (sortVal === SORT_BY_DATE_ASC) {
+      const sortedData = data.data.sort(compareDateAsc);
+      sortedDateData(sortedData);
     }
-    if(sortVal === SORT_BY_DATE_DESC) {
-const sortedData = data.data.sort(compareDateDesc);
-sortedDateData(sortedData);
+    if (sortVal === SORT_BY_DATE_DESC) {
+      const sortedData = data.data.sort(compareDateDesc);
+      sortedDateData(sortedData);
     }
   };
 
   const handleSearch = () => {
     let searchTitle = searchValue;
-    if(searchValue.length > 2) {
-    searchTitle = searchTitle.replace(/ /g, "+");
-    setSortValue(SELECT_OPTION);
-    firstScreenToggle();
-    fetchSearchRequest();
-    fetchSearchResults(searchTitle);
-    setErrorMsg("");
+    if (searchValue.length > 2) {
+      searchTitle = searchTitle.replace(/ /g, "+");
+      setSortValue(SELECT_OPTION);
+      firstScreenToggle();
+      fetchSearchRequest();
+      fetchSearchResults(searchTitle);
+      setErrorMsg("");
     } else {
-        setErrorMsg("Please enter more than 2 characters");
+      setErrorMsg("Please enter more than 2 characters");
+      inputRef.current.focus();
     }
   };
-
-
 
   const authors = data.authorData;
   return (
     <>
       <div className="fullWidth">
         <div className="search-form">
-  <p className="error-p">{errorMsg}</p>
+          <p className="error-p">{errorMsg}</p>
           <input
-          data-testid="search-input"
+            data-testid="search-input"
             type="text"
+            ref={inputRef}
             className="input-text"
             placeholder="Enter book title"
             onChange={handleChange}
@@ -80,12 +84,17 @@ sortedDateData(sortedData);
             aria-required="true"
             name="searchBox"
             onKeyDown={(e) => {
-              if(e.keyCode === 13) {
-                handleSearch()
+              if (e.keyCode === 13) {
+                handleSearch();
               }
             }}
           />
-          <button data-testid="search-button" className="input-button" aria-label="Search Button" onClick={handleSearch}>
+          <button
+            data-testid="search-button"
+            className="input-button"
+            aria-label="Search Button"
+            onClick={handleSearch}
+          >
             Search
           </button>
         </div>
@@ -93,8 +102,7 @@ sortedDateData(sortedData);
           <FirstScreen />
         ) : data.loading ? (
           <Loader />
-        ) : (
-            data.data.length> 0 ? (
+        ) : data.data.length > 0 ? (
           <div className="container-result">
             <div className="container-sort">
               <select value={sortValue} onChange={handleSort}>
@@ -124,7 +132,11 @@ sortedDateData(sortedData);
                 </div>
               );
             })}
-          </div> ) : <h2 className="noResult-text">No Results Found, Please enter something like "The Great Gatsby" </h2>
+          </div>
+        ) : (
+          <h2 className="noResult-text">
+            No Results Found, Please enter something like "The Great Gatsby"{" "}
+          </h2>
         )}
       </div>
     </>

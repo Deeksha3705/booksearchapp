@@ -48,6 +48,7 @@ font-size:18px;
   font-size: 14px;
 }
 .input-button {
+  cursor: pointer;
   -webkit-appearance: none;
   width: 30%;
   min-width: 150px;
@@ -59,6 +60,11 @@ font-size:18px;
   font-weight: bold;
   border: solid #666 1px;
   font-size: 14px;
+}
+
+.input-button:hover {
+  color: #00b0ff;
+  background-color: #fff;
 }
 
 .subtitle {
